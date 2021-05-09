@@ -5,16 +5,11 @@ import { gql } from 'apollo-server-express';
 export const typeDefs = gql`
   # query
   type Query {
-    hello: String
+    articles: [Article]
+    article: Article
   }
 
   # types
-  type Response {
-    status: String
-    totalResults: Int
-    articles: [Article]
-  }
-
   type Source {
     id: String
     name: String
