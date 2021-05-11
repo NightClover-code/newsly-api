@@ -10,8 +10,10 @@
     "graphql": "^15.5.0"
   },
   "scripts": {
-    "start": "tsc --watch --preserveWatchOutput",
-    "serve": "nodemon ./dist/index.js",
+    "start": "node dist/index.js",
+    "postinstall": "tsc",
+    "watch-node": "nodemon dist/index.js",
+    "watch-ts": "tsc -w",
     "dev": "concurrently --kill-others \"yarn run start\" \"yarn run serve\""
   },
   "devDependencies": {
