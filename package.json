@@ -16,6 +16,9 @@
     "watch-ts": "tsc -w",
     "dev": "concurrently --kill-others \"yarn run start\" \"yarn run serve\""
   },
+  "engines": {
+    "node": "14.16.1"
+  },
   "devDependencies": {
     "@types/express": "^4.17.11",
     "axios": "^0.21.1",
