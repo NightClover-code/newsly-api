@@ -10,7 +10,7 @@ export const resolvers = {
           category: 'general',
           country: 'us',
           apiKey: process.env.API_KEY,
-          pageSize: 10,
+          pageSize: 11,
         },
       });
       return data.articles;
