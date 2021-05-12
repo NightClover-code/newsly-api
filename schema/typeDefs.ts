@@ -25,4 +25,9 @@ export const typeDefs = gql`
     publishedAt: String
     content: String
   }
+
+  # Mutations
+  type Mutation {
+    uploadPhoto(photo: String!): String!
+  }
 `;
