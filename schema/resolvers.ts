@@ -14,18 +14,13 @@ export const resolvers = {
           pageSize: 11,
         },
       });
-      return data.articles;
-    },
-  },
-  Mutation: {
-    updateArticles: async (_: any, { articles }: any) => {
       //initialize cloudinary
       cloudinary.v2.config({
         cloud_name: process.env.CLOUDINARY_NAME,
         api_key: process.env.CLOUDINARY_API_KEY,
         api_secret: process.env.CLOUDINARY_API_SECRET,
       });
-      return articles.map(async (article: any) => {
+      return data.articles.map(async (article: any) => {
         //destructuring
         const { urlToImage } = article;
         //returning new articles with cloudinary uploaded photos
