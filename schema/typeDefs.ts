@@ -28,6 +28,28 @@ export const typeDefs = gql`
 
   # Mutations
   type Mutation {
-    uploadPhoto(photo: String!): String!
+    uploadArticles(input: UploadArticlesInput!): [Article!]!
+  }
+
+  # inputs
+  input SourceInput {
+    id: String
+    name: String
+  }
+
+  input ArticleInput {
+    source: SourceInput
+    author: String
+    title: String
+    description: String
+    url: String
+    urlToImage: String
+    publishedAt: String
+    content: String
+  }
+
+  input UploadArticlesInput {
+    photo: String!
+    articles: [ArticleInput!]!
   }
 `;
