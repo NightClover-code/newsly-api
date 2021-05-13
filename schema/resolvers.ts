@@ -18,25 +18,27 @@ export const resolvers = {
     },
   },
   Mutation: {
-    uploadArticles: async (_: any, { input: { articles, photo } }: any) => {
+    uploadArticles: async (_: any, { article }: any) => {
       //initialize cloudinary
       cloudinary.v2.config({
         cloud_name: process.env.CLOUDINARY_NAME,
         api_key: process.env.CLOUDINARY_API_KEY,
         api_secret: process.env.CLOUDINARY_API_SECRET,
       });
+      //destructuring
+      const { urlToImage } = article;
       //returning new articles with cloudinary uploaded photos
       try {
-        const { url } = await cloudinary.v2.uploader.upload(photo);
-        return articles.map((article: any) => ({
-          ...article, 
+        const { url } = await cloudinary.v2.uploader.upload(urlToImage);
+        return {
+          ...article,
           urlToImage: url,
-        }))
+        };
       } catch (err) {
-        return articles.map((article: any) => ({
+        return {
           ...article,
           urlToImage: `Image could not be uploaded: ${err.message}`,
-        }));
+        };
       }
     },
   },
