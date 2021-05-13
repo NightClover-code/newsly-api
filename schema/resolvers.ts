@@ -6,6 +6,7 @@ import cloudinary from 'cloudinary';
 export const resolvers = {
   Query: {
     articles: async () => {
+      //fetching raw articles
       const { data } = await newsAPI.get('/top-headlines', {
         params: {
           category: 'general',
@@ -20,6 +21,7 @@ export const resolvers = {
         api_key: process.env.CLOUDINARY_API_KEY,
         api_secret: process.env.CLOUDINARY_API_SECRET,
       });
+      //articles with cloudinary url
       return data.articles.map(async (article: any) => {
         //destructuring
         const { urlToImage } = article;

@@ -6,7 +6,6 @@ export const typeDefs = gql`
   # query
   type Query {
     articles: [Article]
-    article: Article
   }
 
   # types
