@@ -18,7 +18,7 @@ export const resolvers = {
     },
   },
   Mutation: {
-    uploadArticles: async (_: any, { article }: any) => {
+    updateArticle: async (_: any, { article }: any) => {
       //initialize cloudinary
       cloudinary.v2.config({
         cloud_name: process.env.CLOUDINARY_NAME,
