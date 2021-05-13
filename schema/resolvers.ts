@@ -30,12 +30,12 @@ export const resolvers = {
           const { url } = await cloudinary.v2.uploader.upload(urlToImage);
           return {
             ...article,
-            urlToImage: url,
+            urlToImage: `Image could not be uploaded`,
           };
         } catch (err) {
           return {
             ...article,
-            urlToImage: `Image could not be uploaded: ${err.message}`,
+            urlToImage: `Image could not be uploaded`,
           };
         }
       });
