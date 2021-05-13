@@ -21,13 +21,12 @@ export const resolvers = {
         api_key: process.env.CLOUDINARY_API_KEY,
         api_secret: process.env.CLOUDINARY_API_SECRET,
       });
-      //articles with cloudinary url
+      //new articles
       return data.articles.map(async (article: any) => {
-        //destructuring
         const { urlToImage } = article;
         //returning new articles with cloudinary uploaded photos
         try {
-          const { url } = await cloudinary.v2.uploader.upload(urlToImage);
+          // const { url } = await cloudinary.v2.uploader.upload(urlToImage);
           return {
             ...article,
             urlToImage: `Image could not be uploaded`,
