@@ -28,7 +28,7 @@ export const typeDefs = gql`
 
   # Mutations
   type Mutation {
-    updateArticle(article: ArticleInput!): Article!
+    updateArticles(articles: [ArticleInput!]!): [Article]
   }
 
   # inputs
