@@ -11,7 +11,6 @@ export const resolvers = {
       const { data } = await axios.get('http://localhost:4000/articles');
 
       return data;
-
       // return db.articles.list();
       // const data = [
       //   {
