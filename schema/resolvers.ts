@@ -7,7 +7,7 @@ import Article from '../models/article';
 export const resolvers = {
   Query: {
     articles: async () => {
-      // fetching raw articles
+      //fetching raw articles
       const {
         data: { articles },
       } = await newsAPI.get('/top-headlines', {
@@ -18,6 +18,24 @@ export const resolvers = {
           pageSize: 11,
         },
       });
+
+      //saving articles with different contents
+      const savedArticles = await Article.find({});
+
+      articles.map(async (article: any, index: number) => {
+        if (article.content !== savedArticles[index].content) {
+          await Article.create(article);
+        }
+      });
+
+      return savedArticles;
+    },
+  },
+  Mutation: {
+    getUpdatedArticles: async () => {
+      //getting saved articles
+      const savedArticles = await Article.find({});
+
       //initialize cloudinary
       cloudinary.v2.config({
         cloud_name: process.env.CLOUDINARY_NAME,
@@ -25,13 +43,30 @@ export const resolvers = {
         api_secret: process.env.CLOUDINARY_API_SECRET,
       });
 
-      //saving articles with different content
-      const savedArticles = Article.find({});
+      //updating articles to use cloudinary images
+      savedArticles.map(async (article: any) => {
+        try {
+          const { urlToImage, publicId, _id } = article;
 
-      articles.map(async (article: any, index: number) => {
-        if (article.content !== savedArticles[index].content) {
-          const articleToSave = new Article(article);
-          const savedArticle = await articleToSave.save();
+          const { url, public_id } = await cloudinary.v2.uploader.upload(
+            urlToImage,
+            {
+              public_id: publicId,
+            }
+          );
+
+          await Article.updateOne(
+            {
+              _id,
+            },
+            {
+              publicId: public_id,
+              urlToImage: url,
+            }
+          );
+          return article;
+        } catch (err) {
+          throw err;
         }
       });
 
