@@ -24,6 +24,7 @@ export const resolvers = {
 
       articles.map(async (article: any, index: number) => {
         if (article.content !== savedArticles[index].content) {
+          await Article.deleteMany({});
           await Article.create(article);
         }
       });
