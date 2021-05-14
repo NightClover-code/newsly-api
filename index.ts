@@ -6,9 +6,6 @@ import mongoose from 'mongoose';
 //importing graphql schema
 import { typeDefs } from './schema/typeDefs';
 import { resolvers } from './schema/resolvers';
-//importing utils
-import newsAPI from './utils';
-import { v4 as uuidv4 } from 'uuid';
 
 //init app
 const app = express();
@@ -37,30 +34,6 @@ mongoose
       );
     });
   });
-
-//routes
-app.get('/articles', async (req, res) => {
-  try {
-    // fetching raw articles
-    const { data } = await newsAPI.get('/top-headlines', {
-      params: {
-        category: 'general',
-        country: 'us',
-        apiKey: process.env.NEWS_API_KEY,
-        pageSize: 11,
-      },
-    });
-
-    const newArticles = data.articles.map((article: any) => ({
-      id: uuidv4(),
-      ...article,
-    }));
-
-    res.send(newArticles);
-  } catch (err) {
-    throw err;
-  }
-});
 
 //middlewares
 server.applyMiddleware({ app });
