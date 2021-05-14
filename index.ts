@@ -36,4 +36,4 @@ mongoose
   });
 
 //middlewares
-server.applyMiddleware({ app });
+// server.applyMiddleware({ app });
