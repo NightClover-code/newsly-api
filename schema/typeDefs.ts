@@ -15,19 +15,13 @@ export const typeDefs = gql`
   }
 
   type Article {
-    id: ID!
     source: Source
     author: String
     title: String
     description: String
     url: String
-    image: Image
+    urlToImage: String
     publishedAt: String
     content: String
-  }
-
-  type Image {
-    id: ID
-    urlToImage: String
   }
 `;

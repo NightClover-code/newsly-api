@@ -10,14 +10,14 @@ import { resolvers } from './schema/resolvers';
 import newsAPI from './utils';
 import { v4 as uuidv4 } from 'uuid';
 
+//init app
+const app = express();
+dotenv.config();
+
 //env init
 const PORT = process.env.PORT;
 const password = process.env.MONGO_DB_PASSWORD;
 const dbName = process.env.MONGO_DB_DATABASE_NAME;
-
-//init app
-const app = express();
-dotenv.config();
 
 //init server
 const server = new ApolloServer({
