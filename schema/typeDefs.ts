@@ -16,6 +16,7 @@ export const typeDefs = gql`
 
   type Article {
     _id: ID!
+    publicId: ID
     source: Source
     author: String
     title: String

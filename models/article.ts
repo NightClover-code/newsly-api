@@ -3,6 +3,10 @@ import { Schema, model } from 'mongoose';
 
 //schema
 const articleSchema = new Schema({
+  publicId: {
+    type: String,
+    default: null,
+  },
   source: {
     id: String,
     name: String,

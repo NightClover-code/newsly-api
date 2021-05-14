@@ -18,13 +18,20 @@ export const resolvers = {
           pageSize: 11,
         },
       });
+      //initialize cloudinary
+      cloudinary.v2.config({
+        cloud_name: process.env.CLOUDINARY_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+      });
 
-      const savedArticles = await Article.find({});
+      //saving articles with different content
+      const savedArticles = Article.find({});
 
       articles.map(async (article: any, index: number) => {
         if (article.content !== savedArticles[index].content) {
           const articleToSave = new Article(article);
-          await articleToSave.save();
+          const savedArticle = await articleToSave.save();
         }
       });
 
