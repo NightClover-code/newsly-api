@@ -25,7 +25,11 @@ const server = new ApolloServer({
 //connection to mongodb
 const dbURI = `mongodb+srv://achraf:${password}@newslydb.xihcp.mongodb.net/${dbName}?retryWrites=true&w=majority`;
 mongoose
-  .connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(dbURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    autoIndex: false,
+  })
   .then(() => {
     app.listen(PORT || '4000', () => {
       console.log(
@@ -36,4 +40,4 @@ mongoose
   });
 
 //middlewares
-// server.applyMiddleware({ app });
+server.applyMiddleware({ app });

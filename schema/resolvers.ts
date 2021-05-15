@@ -7,6 +7,13 @@ import Article from '../models/article';
 export const resolvers = {
   Query: {
     articles: async () => {
+      //getting articles from db
+      const savedArticles = await Article.find({});
+      return savedArticles;
+    },
+  },
+  Mutation: {
+    saveArticles: async () => {
       //fetching raw articles
       const {
         data: { articles },
@@ -19,22 +26,18 @@ export const resolvers = {
         },
       });
 
-      //saving articles with different contents
       const savedArticles = await Article.find({});
+      //deleting old articles
+      await Article.deleteMany({});
 
-      articles.map(async (article: any, index: number) => {
-        if (article.content !== savedArticles[index].content) {
-          await Article.deleteMany({});
-          await Article.create(article);
-        }
+      //saving new articles
+      articles.forEach(async (article: any) => {
+        await Article.create(article);
       });
-
       return savedArticles;
     },
-  },
-  Mutation: {
-    getUpdatedArticles: async () => {
-      //getting saved articles
+    updateArticles: async () => {
+      //getting articles from db
       const savedArticles = await Article.find({});
 
       //initialize cloudinary
@@ -45,32 +48,30 @@ export const resolvers = {
       });
 
       //updating articles to use cloudinary images
-      savedArticles.map(async (article: any) => {
-        try {
-          const { urlToImage, publicId, _id } = article;
+      savedArticles.forEach(async (article: any) => {
+        const { urlToImage, publicId, _id } = article;
 
-          const { url, public_id } = await cloudinary.v2.uploader.upload(
-            urlToImage,
-            {
-              public_id: publicId,
-            }
-          );
-
-          await Article.updateOne(
-            {
-              _id,
-            },
-            {
-              publicId: public_id,
-              urlToImage: url,
-            }
-          );
-          return article;
-        } catch (err) {
-          throw err;
+        if (publicId === null) {
+          try {
+            const { url, public_id } = await cloudinary.v2.uploader.upload(
+              urlToImage
+            );
+            await Article.updateOne(
+              {
+                _id,
+              },
+              {
+                publicId: public_id,
+                urlToImage: url,
+              }
+            );
+          } catch (err) {
+            throw err;
+          }
         }
-      });
 
+        return article;
+      });
       return savedArticles;
     },
   },
