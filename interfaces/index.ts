@@ -1,4 +1,5 @@
-export interface Article {
+export interface ArticleType {
+  _id: string;
   publicId: string | null;
   source: {
     id: string;
@@ -11,4 +12,5 @@ export interface Article {
   urlToImage: string;
   publishedAt: string;
   content: string;
+  __v: string;
 }
