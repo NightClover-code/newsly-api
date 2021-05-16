@@ -82,9 +82,8 @@ export const resolvers = {
             }
           );
         }
-
-        return article;
       });
+
       return savedArticles;
     },
   },
