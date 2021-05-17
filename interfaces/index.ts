@@ -1,3 +1,4 @@
+//interfaces
 export interface ArticleType {
   _id: string;
   publicId: string | null;
