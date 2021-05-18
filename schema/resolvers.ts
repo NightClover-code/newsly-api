@@ -15,76 +15,70 @@ export const resolvers = {
   },
   Mutation: {
     saveArticles: async () => {
-      //fetching raw articles
-      const {
-        data: { articles },
-      } = await newsAPI.get('/top-headlines', {
-        params: {
-          category: 'general',
-          country: 'us',
-          apiKey: process.env.NEWS_API_KEY,
-          pageSize: 11,
-        },
-      });
+      try {
+        //fetching raw articles
+        const {
+          data: { articles },
+        } = await newsAPI.get('/top-headlines', {
+          params: {
+            category: 'general',
+            country: 'us',
+            apiKey: process.env.NEWS_API_KEY,
+            pageSize: 11,
+          },
+        });
 
-      const savedArticles: ArticleType[] = await Article.find({});
-      //deleting old articles
-      await Article.deleteMany({});
+        const savedArticles: ArticleType[] = await Article.find({});
+        //deleting old articles
+        await Article.deleteMany({});
 
-      //initialize cloudinary
-      cloudinary.v2.config({
-        cloud_name: process.env.CLOUDINARY_NAME,
-        api_key: process.env.CLOUDINARY_API_KEY,
-        api_secret: process.env.CLOUDINARY_API_SECRET,
-      });
+        //deleting old cloudinary images
+        savedArticles.forEach(async ({ publicId }) => {
+          if (publicId) {
+            await cloudinary.v2.uploader.destroy(publicId);
+          }
+        });
 
-      //deleting old cloudinary images
-      savedArticles.forEach(async ({ publicId }) => {
-        if (publicId) {
-          await cloudinary.v2.uploader.destroy(publicId);
-        }
-      });
-
-      //saving new articles
-      articles.forEach(async (article: ArticleType) => {
-        if (article.urlToImage) {
-          await Article.create(article);
-        }
-      });
-      return savedArticles;
+        //saving new articles
+        articles.forEach(async (article: ArticleType) => {
+          if (article.urlToImage) {
+            await Article.create(article);
+          }
+        });
+        return savedArticles;
+      } catch (err) {
+        console.log(err);
+      }
     },
     updateArticles: async () => {
-      //getting articles from db
-      const savedArticles: ArticleType[] = await Article.find({});
+      try {
+        //getting articles from db
+        const savedArticles: ArticleType[] = await Article.find({});
 
-      //initialize cloudinary
-      cloudinary.v2.config({
-        cloud_name: process.env.CLOUDINARY_NAME,
-        api_key: process.env.CLOUDINARY_API_KEY,
-        api_secret: process.env.CLOUDINARY_API_SECRET,
-      });
+        //updating articles to use cloudinary images
+        savedArticles.forEach(async article => {
+          const { urlToImage, publicId, _id } = article;
 
-      //updating articles to use cloudinary images
-      savedArticles.forEach(async article => {
-        const { urlToImage, publicId, _id } = article;
+          if (publicId === null) {
+            const { url, public_id } = await cloudinary.v2.uploader.upload(
+              urlToImage
+            );
+            await Article.updateOne(
+              {
+                _id,
+              },
+              {
+                publicId: public_id,
+                urlToImage: url,
+              }
+            );
+          }
+        });
 
-        if (publicId === null) {
-          const { url, public_id } = await cloudinary.v2.uploader.upload(
-            urlToImage
-          );
-          await Article.updateOne(
-            {
-              _id,
-            },
-            {
-              publicId: public_id,
-              urlToImage: url,
-            }
-          );
-        }
-      });
-
-      return savedArticles;
+        return savedArticles;
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
 };

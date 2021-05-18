@@ -3,6 +3,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { ApolloServer } from 'apollo-server-express';
 import mongoose from 'mongoose';
+import cloudinary from 'cloudinary';
+
 //importing graphql schema
 import { typeDefs } from './schema/typeDefs';
 import { resolvers } from './schema/resolvers';
@@ -15,6 +17,13 @@ dotenv.config();
 const PORT = process.env.PORT;
 const password = process.env.MONGO_DB_PASSWORD;
 const dbName = process.env.MONGO_DB_DATABASE_NAME;
+
+//initialize cloudinary
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 //init server
 const server = new ApolloServer({
