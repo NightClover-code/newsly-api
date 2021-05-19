@@ -1,5 +1,5 @@
 //importing utils
-import newsAPI from '../utils';
+import { newsAPI, cloudinaryURLs } from '../utils';
 import cloudinary from 'cloudinary';
 import Article from '../models/article';
 import { ArticleType } from '../interfaces';
@@ -11,6 +11,10 @@ export const resolvers = {
       // getting articles from db
       const savedArticles: ArticleType[] = await Article.find({});
       return savedArticles;
+    },
+    cloudinaryURLs: () => {
+      //cloudinary saved images
+      return cloudinaryURLs;
     },
   },
   Mutation: {
