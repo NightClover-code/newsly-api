@@ -8,13 +8,13 @@ import { ArticleType } from '../interfaces';
 export const resolvers = {
   Query: {
     articles: async () => {
-      //getting articles from db
+      // getting articles from db
       const savedArticles: ArticleType[] = await Article.find({});
       return savedArticles;
     },
   },
   Mutation: {
-    saveArticles: async () => {
+    saveAndUpdateArticles: async () => {
       try {
         //fetching raw articles
         const {
@@ -40,42 +40,36 @@ export const resolvers = {
         });
 
         //saving new articles
-        articles.forEach(async (article: ArticleType) => {
-          if (article.urlToImage) {
-            await Article.create(article);
-          }
-        });
-        return savedArticles;
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    updateArticles: async () => {
-      try {
-        //getting articles from db
-        const savedArticles: ArticleType[] = await Article.find({});
+        const newSavedArticles = await Promise.all(
+          articles.map(async (article: ArticleType) => {
+            if (article.urlToImage) {
+              const savedArticle = await Article.create(article);
+              return savedArticle;
+            }
+          })
+        );
 
-        //updating articles to use cloudinary images
-        savedArticles.forEach(async article => {
-          const { urlToImage, publicId, _id } = article;
+        const updatedArticles = Promise.all(
+          newSavedArticles.map(async (article: any) => {
+            const { urlToImage, _id } = article;
 
-          if (publicId === null) {
             const { url, public_id } = await cloudinary.v2.uploader.upload(
               urlToImage
             );
-            await Article.updateOne(
-              {
-                _id,
-              },
+            const updatedArticle = await Article.findByIdAndUpdate(
+              _id,
               {
                 publicId: public_id,
                 urlToImage: url,
-              }
+              },
+              { lean: true, new: true }
             );
-          }
-        });
 
-        return savedArticles;
+            return updatedArticle;
+          })
+        );
+
+        return updatedArticles;
       } catch (err) {
         console.log(err);
       }

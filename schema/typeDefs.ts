@@ -29,7 +29,6 @@ export const typeDefs = gql`
 
   # Mutations
   type Mutation {
-    updateArticles: [Article!]!
-    saveArticles: [Article!]!
+    saveAndUpdateArticles: [Article!]!
   }
 `;
