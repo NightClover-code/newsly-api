@@ -39,9 +39,14 @@ export const resolvers = {
           }
         });
 
+        //articles with images
+        const articlesWithImages = articles.filter(
+          ({ urlToImage }: ArticleType) => urlToImage
+        );
+
         //saving new articles
         const newSavedArticles = await Promise.all(
-          articles.map(async (article: ArticleType) => {
+          articlesWithImages.map(async (article: ArticleType) => {
             if (article.urlToImage) {
               const savedArticle = await Article.create(article);
               return savedArticle;
