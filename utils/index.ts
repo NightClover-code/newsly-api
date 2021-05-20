@@ -8,6 +8,7 @@ export const cloudinaryURLs = {
     'https://res.cloudinary.com/achraf-dev/image/upload/v1621466138/icon-arrow_t3lrof.svg',
   iconDot:
     'https://res.cloudinary.com/achraf-dev/image/upload/v1621468221/icon-dot_qqjtrx.jpg',
+  logo: 'https://res.cloudinary.com/achraf-dev/image/upload/v1621468255/logo_cz2gqx.svg',
   iconQuotes:
     'https://res.cloudinary.com/achraf-dev/image/upload/v1621468255/icon-quotes_tirgqk.svg',
   iconSearch:
