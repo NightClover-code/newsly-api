@@ -29,25 +29,13 @@ export const typeDefs = gql`
   }
 
   type CloudinaryURLs {
-    avatar: String
-    heroShape: String
-    heroTriangles: String
-    iconArrow: String
-    iconDot: String
-    iconFacebook: String
-    logo: String
-    iconLinkedIn: String
-    iconQuotes: String
-    iconSearch: String
-    iconTwitter: String
-    logoBusiness: String
-    logoFooter: String
-    logoEntertainement: String
-    logoGeneral: String
-    logoHealth: String
-    logoScience: String
-    logoSports: String
-    logoTechnology: String
+    avatar: String;
+    iconArrow: String;
+    iconDot: String;
+    logo: String;
+    iconQuotes: String;
+    iconSearch: String;
+    logoFooter: String;
   }
 
   # Mutations
