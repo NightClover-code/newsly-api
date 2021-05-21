@@ -5,9 +5,11 @@ import { ApolloServer } from 'apollo-server-express';
 import mongoose from 'mongoose';
 import cloudinary from 'cloudinary';
 
-//importing graphql schema
+//importing graphql utils
 import { typeDefs } from './schema/typeDefs';
 import { resolvers } from './schema/resolvers';
+import { request } from 'graphql-request';
+import { saveAndUpdateArticlesMutation } from './graphql';
 
 //init app
 const app = express();
@@ -40,7 +42,18 @@ mongoose
     autoIndex: false,
   })
   .then(() => {
-    app.listen(PORT || '4000', () => {
+    app.listen(PORT || '4000', async () => {
+      const delay = 1800000;
+      //updating server every 15min
+      const callback = async () => {
+        await request(
+          process.env.NEWSLY_API_URL!,
+          saveAndUpdateArticlesMutation
+        );
+        setTimeout(callback, delay);
+      };
+      setTimeout(callback, delay);
+
       console.log(
         `Server running on port ${PORT}`,
         `visit http://localhost:${PORT}/graphql`
