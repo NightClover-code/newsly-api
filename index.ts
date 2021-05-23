@@ -43,7 +43,7 @@ mongoose
   })
   .then(() => {
     app.listen(PORT || '4000', async () => {
-      const delay = 3600000;
+      const delay = 1800000;
       //updating server every 15min
       const callback = async () => {
         await request(
