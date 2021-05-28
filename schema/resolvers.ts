@@ -1,8 +1,8 @@
 //importing utils
 import { newsAPI, cloudinaryURLs } from '../utils';
+import { ArticleType } from '../interfaces';
 import cloudinary from 'cloudinary';
 import Article from '../models/article';
-import { ArticleType } from '../interfaces';
 
 //resolvers
 export const resolvers = {
