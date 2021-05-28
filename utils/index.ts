@@ -13,6 +13,8 @@ export const cloudinaryURLs = {
     'https://res.cloudinary.com/achraf-dev/image/upload/v1621468255/icon-search_fawsjz.svg',
   logoFooter:
     'https://res.cloudinary.com/achraf-dev/image/upload/v1621468256/logo-footer_sjeart.svg',
+  favicon:
+    'https://res.cloudinary.com/achraf-dev/image/upload/v1622242949/favicon_4_p6cqgv.ico',
 };
 
 export const newsAPI = axios.create({
