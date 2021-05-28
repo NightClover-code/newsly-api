@@ -30,12 +30,12 @@ export const typeDefs = gql`
 
   type CloudinaryURLs {
     avatar: String
-    iconArrow: String
     iconDot: String
     logo: String
     iconQuotes: String
     iconSearch: String
     logoFooter: String
+    favicon: String
   }
 
   # Mutations
