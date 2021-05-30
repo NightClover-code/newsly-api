@@ -51,10 +51,8 @@ export const resolvers = {
         //saving new articles
         const newSavedArticles = await Promise.all(
           articlesWithImages.map(async (article: ArticleType) => {
-            if (article.urlToImage) {
-              const savedArticle = await Article.create(article);
-              return savedArticle;
-            }
+            const savedArticle = await Article.create(article);
+            return savedArticle;
           })
         );
 
