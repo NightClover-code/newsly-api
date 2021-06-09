@@ -4,6 +4,7 @@ import cloudinary from 'cloudinary';
 import Article from '../models/article';
 import { ArticleType } from '../interfaces';
 
+//raw newsAPI articles
 export const getArticles = async () => {
   try {
     const {
@@ -23,6 +24,7 @@ export const getArticles = async () => {
   }
 };
 
+//uploading images to cloudinary
 export const uploadToCloudinary = async (urlToImage: string) => {
   try {
     const { url, public_id } = await cloudinary.v2.uploader.upload(urlToImage);
@@ -34,6 +36,7 @@ export const uploadToCloudinary = async (urlToImage: string) => {
   }
 };
 
+//destroying old images
 export const destroyFromCloudinary = async (publicId: string) => {
   try {
     await cloudinary.v2.uploader.destroy(publicId);
@@ -42,6 +45,7 @@ export const destroyFromCloudinary = async (publicId: string) => {
   }
 };
 
+//deleting all database articles
 export const deleteArticlesDB = async () => {
   try {
     await Article.deleteMany({});
@@ -50,6 +54,7 @@ export const deleteArticlesDB = async () => {
   }
 };
 
+//getting all database articles
 export const getArticlesDB = async () => {
   try {
     const savedArticles = await Article.find({});
@@ -60,6 +65,7 @@ export const getArticlesDB = async () => {
   }
 };
 
+//creating an article in database
 export const createArticleDB = async (article: ArticleType) => {
   try {
     const savedArticle = await Article.create(article);
@@ -70,6 +76,7 @@ export const createArticleDB = async (article: ArticleType) => {
   }
 };
 
+//updating an article in database
 export const updateArticleDB = async (
   _id: string,
   public_id: string | null,
