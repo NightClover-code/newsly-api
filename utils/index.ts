@@ -1,5 +1,5 @@
-//importing axios
-import axios from 'axios';
+export * from './api';
+export * from './async-handlers';
 
 export const cloudinaryURLs = {
   avatar:
@@ -16,7 +16,3 @@ export const cloudinaryURLs = {
   favicon:
     'https://res.cloudinary.com/achraf-dev/image/upload/v1622242949/favicon_4_p6cqgv.ico',
 };
-
-export const newsAPI = axios.create({
-  baseURL: 'https://newsapi.org/v2',
-});

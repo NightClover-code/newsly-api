@@ -1,5 +1,11 @@
 //importing utils
-import { newsAPI, cloudinaryURLs } from '../utils';
+import {
+  newsAPI,
+  cloudinaryURLs,
+  getArticles,
+  uploadToCloudinary,
+  destroyFromCloudinary,
+} from '../utils';
 import { ArticleType } from '../interfaces';
 import cloudinary from 'cloudinary';
 import Article from '../models/article';
@@ -21,16 +27,7 @@ export const resolvers = {
     saveAndUpdateArticles: async () => {
       try {
         //fetching raw articles
-        const {
-          data: { articles },
-        } = await newsAPI.get('/top-headlines', {
-          params: {
-            category: 'general',
-            country: 'us',
-            apiKey: process.env.NEWS_API_KEY,
-            pageSize: 11,
-          },
-        });
+        const articles = await getArticles();
 
         const savedArticles: ArticleType[] = await Article.find({});
         //deleting old articles
@@ -39,7 +36,7 @@ export const resolvers = {
         //deleting old cloudinary images
         savedArticles.forEach(async ({ publicId }) => {
           if (publicId) {
-            await cloudinary.v2.uploader.destroy(publicId);
+            await destroyFromCloudinary(publicId);
           }
         });
 
@@ -60,9 +57,8 @@ export const resolvers = {
           newSavedArticles.map(async (article: any) => {
             const { urlToImage, _id } = article;
 
-            const { url, public_id } = await cloudinary.v2.uploader.upload(
-              urlToImage
-            );
+            const { url, public_id } = await uploadToCloudinary(urlToImage);
+
             const updatedArticle = await Article.findByIdAndUpdate(
               _id,
               {
