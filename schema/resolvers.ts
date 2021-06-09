@@ -1,21 +1,22 @@
 //importing utils
 import {
-  newsAPI,
   cloudinaryURLs,
   getArticles,
   uploadToCloudinary,
   destroyFromCloudinary,
+  getArticlesDB,
+  deleteArticlesDB,
+  createArticleDB,
+  updateArticleDB,
 } from '../utils';
 import { ArticleType } from '../interfaces';
-import cloudinary from 'cloudinary';
-import Article from '../models/article';
 
 //resolvers
 export const resolvers = {
   Query: {
     articles: async () => {
       // getting articles from db
-      const savedArticles: ArticleType[] = await Article.find({});
+      const savedArticles = await getArticlesDB();
       return savedArticles;
     },
     cloudinaryURLs: () => {
@@ -25,57 +26,47 @@ export const resolvers = {
   },
   Mutation: {
     saveAndUpdateArticles: async () => {
-      try {
-        //fetching raw articles
-        const articles = await getArticles();
+      //fetching raw articles
+      const articles = await getArticles();
 
-        const savedArticles: ArticleType[] = await Article.find({});
-        //deleting old articles
-        await Article.deleteMany({});
+      const savedArticles = await getArticlesDB();
+      //deleting old articles
+      await deleteArticlesDB();
 
-        //deleting old cloudinary images
-        savedArticles.forEach(async ({ publicId }) => {
-          if (publicId) {
-            await destroyFromCloudinary(publicId);
-          }
-        });
+      //deleting old cloudinary images
+      savedArticles?.forEach(async ({ publicId }) => {
+        if (publicId) {
+          await destroyFromCloudinary(publicId);
+        }
+      });
 
-        //articles with images
-        const articlesWithImages = articles.filter(
-          ({ urlToImage }: ArticleType) => urlToImage
-        );
+      //articles with images
+      const articlesWithImages = articles.filter(
+        ({ urlToImage }: ArticleType) => urlToImage
+      );
 
-        //saving new articles
-        const newSavedArticles = await Promise.all(
-          articlesWithImages.map(async (article: ArticleType) => {
-            const savedArticle = await Article.create(article);
-            return savedArticle;
-          })
-        );
+      //saving new articles
+      const newSavedArticles = await Promise.all(
+        articlesWithImages.map(async (article: ArticleType) => {
+          const savedArticle = await createArticleDB(article);
+          return savedArticle;
+        })
+      );
 
-        const updatedArticles = Promise.all(
-          newSavedArticles.map(async (article: any) => {
-            const { urlToImage, _id } = article;
+      //getting new updated articles
+      const updatedArticles = Promise.all(
+        newSavedArticles.map(async (article: any) => {
+          const { urlToImage, _id } = article;
 
-            const { url, public_id } = await uploadToCloudinary(urlToImage);
+          const { url, public_id } = await uploadToCloudinary(urlToImage);
 
-            const updatedArticle = await Article.findByIdAndUpdate(
-              _id,
-              {
-                publicId: public_id,
-                urlToImage: url,
-              },
-              { lean: true, new: true }
-            );
+          const updatedArticle = await updateArticleDB(_id, public_id, url);
 
-            return updatedArticle;
-          })
-        );
+          return updatedArticle;
+        })
+      );
 
-        return updatedArticles;
-      } catch (err) {
-        console.log(err);
-      }
+      return updatedArticles;
     },
   },
 };
