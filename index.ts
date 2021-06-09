@@ -8,8 +8,7 @@ import cloudinary from 'cloudinary';
 //importing graphql utils
 import { typeDefs } from './schema/typeDefs';
 import { resolvers } from './schema/resolvers';
-import { request } from 'graphql-request';
-import { saveAndUpdateArticlesMutation } from './graphql';
+import { saveAndUpdateArticles } from './utils';
 
 //init app
 const app = express();
@@ -46,10 +45,7 @@ mongoose
       const delay = 1800000;
       //updating server every 15min
       const callback = async () => {
-        await request(
-          process.env.NEWSLY_API_URL!,
-          saveAndUpdateArticlesMutation
-        );
+        await saveAndUpdateArticles();
         setTimeout(callback, delay);
       };
       setTimeout(callback, delay);

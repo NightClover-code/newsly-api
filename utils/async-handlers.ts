@@ -4,6 +4,10 @@ import cloudinary from 'cloudinary';
 import Article from '../models/article';
 import { ArticleType } from '../interfaces';
 
+//importing gql utils
+import { request } from 'graphql-request';
+import { saveAndUpdateArticlesMutation } from '../graphql';
+
 //raw newsAPI articles
 export const getArticles = async () => {
   try {
@@ -94,6 +98,15 @@ export const updateArticleDB = async (
 
       return updatedArticle;
     }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//saving and updating articles from the server
+export const saveAndUpdateArticles = async () => {
+  try {
+    await request(process.env.NEWSLY_API_URL!, saveAndUpdateArticlesMutation);
   } catch (err) {
     console.log(err);
   }
