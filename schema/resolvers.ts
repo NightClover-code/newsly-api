@@ -9,7 +9,6 @@ import {
   createArticleDB,
   updateArticleDB,
 } from '../utils';
-import { ArticleType } from '../interfaces';
 
 //resolvers
 export const resolvers = {
@@ -42,12 +41,12 @@ export const resolvers = {
 
       //articles with images
       const articlesWithImages = articles.filter(
-        ({ urlToImage }: ArticleType) => urlToImage
+        ({ urlToImage }) => urlToImage
       );
 
       //saving new articles
       const newSavedArticles = await Promise.all(
-        articlesWithImages.map(async (article: ArticleType) => {
+        articlesWithImages.map(async article => {
           const savedArticle = await createArticleDB(article);
           return savedArticle;
         })
@@ -55,7 +54,7 @@ export const resolvers = {
 
       //getting new updated articles
       const updatedArticles = await Promise.all(
-        newSavedArticles.map(async (article: any) => {
+        newSavedArticles.map(async article => {
           const { urlToImage, _id } = article;
 
           const { url, public_id } = await uploadToCloudinary(urlToImage);

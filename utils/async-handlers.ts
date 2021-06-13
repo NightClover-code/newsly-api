@@ -22,9 +22,10 @@ export const getArticles = async () => {
       },
     });
 
-    return articles;
+    return articles as ArticleType[];
   } catch (err) {
     console.log(err);
+    return [];
   }
 };
 
