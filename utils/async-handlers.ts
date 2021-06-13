@@ -23,20 +23,20 @@ export const getArticles = async () => {
     });
 
     return articles;
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 };
 
 //uploading images to cloudinary
 export const uploadToCloudinary = async (urlToImage: string) => {
   try {
-    const { url, public_id } = await cloudinary.v2.uploader.upload(urlToImage);
+    const res = await cloudinary.v2.uploader.upload(urlToImage);
 
-    return { url, public_id };
+    return res;
   } catch (err) {
     console.log(err);
-    return { url: 'Could not upload the url.', public_id: null };
+    return { url: null, public_id: null };
   }
 };
 
@@ -84,11 +84,12 @@ export const createArticleDB = async (article: ArticleType) => {
 export const updateArticleDB = async (
   _id: string,
   public_id: string | null,
-  url: string
+  url: string | null
 ) => {
   try {
     if (public_id) {
       const updatedArticle = await Article.findByIdAndUpdate(
+        _id,
         {
           publicId: public_id,
           urlToImage: url,

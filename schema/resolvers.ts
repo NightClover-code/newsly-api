@@ -54,7 +54,7 @@ export const resolvers = {
       );
 
       //getting new updated articles
-      const updatedArticles = Promise.all(
+      const updatedArticles = await Promise.all(
         newSavedArticles.map(async (article: any) => {
           const { urlToImage, _id } = article;
 
