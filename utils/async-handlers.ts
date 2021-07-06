@@ -24,8 +24,7 @@ export const getArticles = async () => {
 
     return articles as ArticleType[];
   } catch (err) {
-    console.log(err);
-    return [];
+    throw err;
   }
 };
 
@@ -36,8 +35,7 @@ export const uploadToCloudinary = async (urlToImage: string) => {
 
     return res;
   } catch (err) {
-    console.log(err);
-    return { url: null, public_id: null };
+    throw err;
   }
 };
 
@@ -46,7 +44,7 @@ export const destroyFromCloudinary = async (publicId: string) => {
   try {
     await cloudinary.v2.uploader.destroy(publicId);
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
@@ -55,7 +53,7 @@ export const deleteArticlesDB = async () => {
   try {
     await Article.deleteMany({});
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
@@ -66,7 +64,7 @@ export const getArticlesDB = async () => {
 
     return savedArticles as ArticleType[];
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
@@ -77,7 +75,7 @@ export const createArticleDB = async (article: ArticleType) => {
 
     return savedArticle;
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
@@ -101,7 +99,7 @@ export const updateArticleDB = async (
       return updatedArticle;
     }
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
 
@@ -110,6 +108,6 @@ export const saveAndUpdateArticles = async () => {
   try {
     await request(process.env.NEWSLY_API_URL!, saveAndUpdateArticlesMutation);
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 };
