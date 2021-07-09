@@ -35,7 +35,7 @@ export const uploadToCloudinary = async (urlToImage: string) => {
 
     return res;
   } catch (err) {
-    throw err;
+    return { public_id: null, url: null };
   }
 };
 
@@ -91,7 +91,7 @@ export const updateArticleDB = async (
         _id,
         {
           publicId: public_id,
-          urlToImage: url,
+          urlToImage: url ? url : "Could not find the url you're looking for.",
         },
         { lean: true, new: true }
       );
