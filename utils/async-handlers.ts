@@ -91,7 +91,7 @@ export const updateArticleDB = async (
         _id,
         {
           publicId: public_id,
-          urlToImage: url ? url : "Could not find the url you're looking for.",
+          urlToImage: url,
         },
         { lean: true, new: true }
       );
