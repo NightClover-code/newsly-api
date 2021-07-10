@@ -53,7 +53,7 @@ export const resolvers = {
       );
 
       //getting new updated articles
-      const updatedArticles = await Promise.all(
+      const nullableUpdatedArticles = await Promise.all(
         newSavedArticles.map(async article => {
           const { urlToImage, _id } = article;
 
@@ -63,6 +63,11 @@ export const resolvers = {
 
           return updatedArticle;
         })
+      );
+
+      //ensuring all articles aren't null
+      const updatedArticles = nullableUpdatedArticles.filter(
+        article => article
       );
 
       return updatedArticles;

@@ -14,11 +14,11 @@ const articleSchema = new Schema({
   author: String,
   title: String,
   description: String,
-  url: {
+  url: String,
+  urlToImage: {
     type: String,
     default: null,
   },
-  urlToImage: String,
   publishedAt: String,
   content: String,
 });

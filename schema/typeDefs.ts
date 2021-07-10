@@ -17,13 +17,13 @@ export const typeDefs = gql`
 
   type Article {
     _id: ID!
-    publicId: ID
+    publicId: ID!
     source: Source
     author: String
     title: String
     description: String
     url: String
-    urlToImage: String
+    urlToImage: String!
     publishedAt: String
     content: String
   }
@@ -40,6 +40,6 @@ export const typeDefs = gql`
 
   # Mutations
   type Mutation {
-    saveAndUpdateArticles: [Article!]!
+    saveAndUpdateArticles: [Article]!
   }
 `;

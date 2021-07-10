@@ -83,7 +83,7 @@ export const createArticleDB = async (article: ArticleType) => {
 export const updateArticleDB = async (
   _id: string,
   public_id: string | null,
-  url: string | null
+  url: string
 ) => {
   try {
     if (public_id) {
