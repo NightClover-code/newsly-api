@@ -32,30 +32,30 @@ const server = new ApolloServer({
   resolvers,
 });
 
-//connection to mongodb
-// const dbURI = `mongodb+srv://achraf:${password}@newslydb.xihcp.mongodb.net/${dbName}?retryWrites=true&w=majority`;
-// mongoose
-//   .connect(dbURI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//     autoIndex: false,
-//   })
-//   .then(() => {
-//     app.listen(PORT || '4000', async () => {
-//       const delay = 1800000;
-//       //updating server every 15min
-//       const callback = async () => {
-//         await saveAndUpdateArticles();
-//         setTimeout(callback, delay);
-//       };
-//       setTimeout(callback, delay);
+// connection to mongodb
+const dbURI = `mongodb+srv://achraf:${password}@newslydb.xihcp.mongodb.net/${dbName}?retryWrites=true&w=majority`;
+mongoose
+  .connect(dbURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    autoIndex: false,
+  })
+  .then(() => {
+    app.listen(PORT || '4000', async () => {
+      const delay = 1800000;
+      //updating server every 15min
+      const callback = async () => {
+        await saveAndUpdateArticles();
+        setTimeout(callback, delay);
+      };
+      setTimeout(callback, delay);
 
-//       console.log(
-//         `Server running on port ${PORT}`,
-//         `visit http://localhost:${PORT}/graphql`
-//       );
-//     });
-//   });
+      console.log(
+        `Server running on port ${PORT}`,
+        `visit http://localhost:${PORT}/graphql`
+      );
+    });
+  });
 
 //middlewares
 server.applyMiddleware({ app });
