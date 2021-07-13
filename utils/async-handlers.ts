@@ -35,7 +35,7 @@ export const uploadToCloudinary = async (urlToImage: string) => {
 
     return res;
   } catch (err) {
-    return { public_id: null, url: null };
+    throw err;
   }
 };
 
@@ -99,7 +99,7 @@ export const updateArticleDB = async (
       return updatedArticle;
     }
   } catch (err) {
-    throw err;
+    return null;
   }
 };
 
