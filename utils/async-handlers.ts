@@ -35,7 +35,8 @@ export const uploadToCloudinary = async (urlToImage: string) => {
 
     return res;
   } catch (err) {
-    throw err;
+    console.log(err);
+    return { url: null, public_id: null };
   }
 };
 
@@ -86,19 +87,18 @@ export const updateArticleDB = async (
   url: string | null
 ) => {
   try {
-    if (public_id) {
-      const updatedArticle = await Article.findByIdAndUpdate(
-        _id,
-        {
-          publicId: public_id,
-          urlToImage: url,
-        },
-        { lean: true, new: true }
-      );
+    const updatedArticle = await Article.findByIdAndUpdate(
+      _id,
+      {
+        publicId: public_id,
+        urlToImage: url,
+      },
+      { lean: true, new: true }
+    );
 
-      return updatedArticle;
-    }
+    return updatedArticle;
   } catch (err) {
+    console.log(err);
     return null;
   }
 };
