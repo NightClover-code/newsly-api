@@ -98,8 +98,7 @@ export const updateArticleDB = async (
 
     return updatedArticle;
   } catch (err) {
-    console.log(err);
-    return null;
+    throw err;
   }
 };
 
